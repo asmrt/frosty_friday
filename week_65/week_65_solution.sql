@@ -106,7 +106,7 @@ CREATE OR REPLACE FUNCTION FROSTY_FRIDAY_DB.WEEK_65_SCHEMA.validate_patent_gap_n
     patent_type STRING
 )
 RETURNS BOOLEAN
-COMMENT = 'アメリカ特許：有効期間判定（MEMOIZABLE(メモ化)なし）'
+COMMENT = 'アメリカ特許：有効期間判定'
 AS
 $$
 CASE
@@ -151,7 +151,7 @@ SELECT patent_index.patent_id
     , patent_type
     , application_date 
     , document_publication_date
-    ,FROSTY_FRIDAY_DB.WEEK_65_SCHEMA.validate_patent_gap_with_memoizable(application_date, document_publication_date, patent_type) AS validate_date_check -- 今回のUDFの実行結果(TRUE/FALSEを返却)
+    ,FROSTY_FRIDAY_DB.WEEK_65_SCHEMA.validate_patent_gap_no_memoizable(application_date, document_publication_date, patent_type) AS validate_date_check -- 今回のUDFの実行結果(TRUE/FALSEを返却)
     , DATEDIFF(DAY , application_date, document_publication_date) AS datediff_for_udf_check -- 【テスト用】UDFの判定に誤りがないかチェックするカラム
 FROM
     cybersyn_us_patent_grants.cybersyn.uspto_contributor_index AS contributor_index
@@ -165,8 +165,8 @@ WHERE
     contributor_index.contributor_name ILIKE 'NVIDIA CORPORATION'
     AND relationships.contribution_type = 'Assignee - United States Company Or Corporation'
     AND patent_type = 'Design'
-    AND FROSTY_FRIDAY_DB.WEEK_65_SCHEMA.validate_patent_gap_with_memoizable(application_date, document_publication_date, patent_type) -- TRUEの場合をチェックする用の条件
-    --AND FROSTY_FRIDAY_DB.WEEK_65_SCHEMA.validate_patent_gap_with_memoizable(application_date, document_publication_date, patent_type) = FALSE -- FALSEの場合をチェックする用の条件
+    AND FROSTY_FRIDAY_DB.WEEK_65_SCHEMA.validate_patent_gap_no_memoizable(application_date, document_publication_date, patent_type) -- TRUEの場合をチェックする用の条件
+    --AND FROSTY_FRIDAY_DB.WEEK_65_SCHEMA.validate_patent_gap_no_memoizable(application_date, document_publication_date, patent_type) = FALSE -- FALSEの場合をチェックする用の条件
 LIMIT 10
 ;
 
@@ -195,22 +195,34 @@ CASE
 END
 $$
 ;
-
--- MEMOIZABLE有/無でクエリの実行時間の差が出るかの検証
--- TODO☆：検証用のクエリ、想定結果を記載
-
-
-
-
-
-
-
-
-
-
-
-
-
+-- 3-1.UDFを使ってみる/特許タイプ：Design
+-- 利用するUDFをメモ化(memoizable)したものに変更
+-- 　変更前：validate_patent_gap_no_memoizable
+-- 　変更後：validate_patent_gap_with_memoizable
+--   →　正常に実行はできる。キャッシュが効くかは別クエリ「memoizable_test_query.sql」にて。
+SELECT patent_index.patent_id
+    , invention_title
+    , patent_type
+    , application_date 
+    , document_publication_date
+    ,FROSTY_FRIDAY_DB.WEEK_65_SCHEMA.validate_patent_gap_with_memoizable(application_date, document_publication_date, patent_type) AS validate_date_check -- 今回のUDFの実行結果(TRUE/FALSEを返却)
+    , DATEDIFF(DAY , application_date, document_publication_date) AS datediff_for_udf_check -- 【テスト用】UDFの判定に誤りがないかチェックするカラム
+FROM
+    cybersyn_us_patent_grants.cybersyn.uspto_contributor_index AS contributor_index
+INNER JOIN
+    cybersyn_us_patent_grants.cybersyn.uspto_patent_contributor_relationships AS relationships
+    ON contributor_index.contributor_id = relationships.contributor_id
+INNER JOIN
+    cybersyn_us_patent_grants.cybersyn.uspto_patent_index AS patent_index
+    ON relationships.patent_id = patent_index.patent_id
+WHERE
+    contributor_index.contributor_name ILIKE 'NVIDIA CORPORATION'
+    AND relationships.contribution_type = 'Assignee - United States Company Or Corporation'
+    AND patent_type = 'Design'
+    AND FROSTY_FRIDAY_DB.WEEK_65_SCHEMA.validate_patent_gap_with_memoizable(application_date, document_publication_date, patent_type) -- TRUEの場合をチェックする用の条件
+    --AND FROSTY_FRIDAY_DB.WEEK_65_SCHEMA.validate_patent_gap_with_memoizable(application_date, document_publication_date, patent_type) = FALSE -- FALSEの場合をチェックする用の条件
+LIMIT 10
+;
 
 -- UDF作成はうまくいくが、UDFの実行でエラーになるケース
 -- <発生条件>
