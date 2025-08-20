@@ -1,4 +1,4 @@
--- 応用：SQL UDFに関するオプションの利用（MEMORAIZE）
+-- 応用：SQL UDFに関するオプションの利用（MEMOIZABLE）
 
 -- 前提
 --  以下week_65に関する以下クエリを実行済みの想定
