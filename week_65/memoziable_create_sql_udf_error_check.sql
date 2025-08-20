@@ -3,7 +3,7 @@
 -- 前提
 --  以下week_65に関する以下クエリを実行済みの想定
 --  https://github.com/asmrt/frosty_friday/blob/main/week_65/week_65_solution.sql
---  MEMORAIZEオプションを付けると、UDFを呼び出した結果をキャッシュし、同一の引数・返却値の場合に処理時間を短縮する。
+--  MEMOIZABLEオプションを付けると、UDFを呼び出した結果をキャッシュし、同一の引数・返却値の場合に処理時間を短縮する。
 -- SQLUDSQL Scaler Memoizable UDFs：https://docs.snowflake.com/en/developer-guide/udf/sql/udf-sql-scalar-functions#label-udf-sql-scalar-memoizable
 -- 
 -- SQL UDF作成/MEMOIZABLE付き
@@ -106,4 +106,3 @@ WHERE
     AND FROSTY_FRIDAY_DB.WEEK_65_SCHEMA.validate_patent_gap_with_memoizable_error(application_date, document_publication_date, patent_type) -- TRUEの場合をチェックする用の条件
 LIMIT 10
 ;
-
