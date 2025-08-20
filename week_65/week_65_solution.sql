@@ -200,6 +200,8 @@ $$
 -- 　変更前：validate_patent_gap_no_memoizable
 -- 　変更後：validate_patent_gap_with_memoizable
 --   →　正常に実行はできる。キャッシュが効くかは別クエリ「memoizable_test_query.sql」にて。
+--       https://github.com/asmrt/frosty_friday/blob/main/week_65/memoizable_test_query.sql
+
 SELECT patent_index.patent_id
     , invention_title
     , patent_type
