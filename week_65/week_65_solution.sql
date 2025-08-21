@@ -16,6 +16,9 @@
 --  　　        Reissue（再発行）特許 → APPLICATION_DATE(申請) と PUBLICATION_DATE(発行日) の差が 365日以内
 --  　　        Design（意匠）特許    → APPLICATION_DATE と PUBLICATION_DATE の差が2年(730日)以内
 
+-- → 色々な言語でUDFを作成でき、チャレンジ上の指定はないが、今回は「スカラSQL UDF」を作成、使ってみる流れとした。
+
+
 -- 0.事前準備：各種設定、DB、スキーマ作成
 USE ROLE SYSADMIN;
 USE warehouse COMPUTE_WH;
@@ -81,7 +84,7 @@ FROM
 WHERE
     invention_title ILIKE ANY ('%OLED%');
 
--- 2-1. SQL UDF作成
+-- 2-1. スカラSQL UDF作成
 -- 以下ルールに基づいて、特許ごとに「TRUE(合格)/FALE(不合格)」を返却するSQL UDF（ユーザ定義関数）を作成する
 --  　<ルール>
 --     申請日(APPLICATION_DATE) と発行日(PUBLICATION_DATE)の差が、以下に該当する場合はTRUE、それ以外はFALSEを返却する。
@@ -169,3 +172,4 @@ WHERE
     --AND FROSTY_FRIDAY_DB.WEEK_65_SCHEMA.validate_patent_gap_no_memoizable(application_date, document_publication_date, patent_type) = FALSE -- FALSEの場合をチェックする用の条件
 LIMIT 10
 ;
+
