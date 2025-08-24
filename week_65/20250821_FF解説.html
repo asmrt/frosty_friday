@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>❄ FrostyFriday Week 65 – Basic(UDF＆Marketplace) 解説</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals -->
+    <!-- Application Structure Plan: このSPAは、元の台本の直線的な流れを、より魅力的で探索的な「タスク指向のインタラクティブガイド」に再構築します。主な構造は、(1)課題の概要、(2)タブ切り替え式のインタラクティブなワークフロー（各ステップでコードと説明を表示）、(3)UDFのロジックを視覚化するインタラクティブなチャート、(4)学んだ主要概念のまとめ、という4つのセクションで構成されます。この構造は、ユーザーが自分のペースで情報を消化し、複雑なロジックを視覚的に理解し、重要な概念を再確認できるようにするために選択されました。これにより、受動的な学習から能動的な学習体験へと転換を図ります。 -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: UDFの特許有効期間ルール -> Goal: 比較 -> Viz/Presentation: 棒グラフ (Chart.js) -> Interaction: ホバー時のツールチップで日数を表示 -> Justification: SQLのCASE文を読むよりも、各特許タイプの有効期間の違いを瞬時に視覚的に比較でき、ロジックの理解を深めるため。
+        - Report Info: 3つのタスク（データ取得、UDF作成、情報抽出） -> Goal: 整理・案内 -> Viz/Presentation: タブ付きのインタラクティブなステップガイド (HTML/CSS/JS) -> Interaction: タブをクリックして各ステップの詳細を表示 -> Justification: 情報を段階的に提示し、UIをクリーンに保ち、ユーザーがプロセス全体を体系的に理解できるようにするため。
+        - Report Info: SQLコードスニペット -> Goal: 情報提供・再利用 -> Viz/Presentation: 整形済みコードブロック (HTML/CSS) -> Interaction: 「コピー」ボタンでクリップボードにコピー -> Justification: ユーザーがコードを簡単に再利用できるようにし、実践的な学習を促進するため。
+        - Report Info: 最終的な抽出結果 -> Goal: 結果の提示 -> Viz/Presentation: スタイル付きHTMLテーブル -> Interaction: なし（静的表示） -> Justification: クエリ実行後の具体的なアウトプットをシミュレートし、タスクの達成イメージを明確にするため。
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: #FDFBF8;
+            color: #4A4A4A;
+        }
+        .tab-active {
+            border-color: #4A5568;
+            background-color: #EDF2F7;
+            color: #2D3748;
+            font-weight: 600;
+        }
+        .tab-inactive {
+            border-color: transparent;
+            color: #718096;
+        }
+        .code-block {
+            background-color: #2d3748;
+            color: #e2e8f0;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            position: relative;
+            font-family: monospace;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+        .copy-btn {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            background-color: #4a5568;
+            color: #e2e8f0;
+            border: none;
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            font-size: 0.875rem;
+            transition: background-color 0.2s;
+        }
+        .copy-btn:hover {
+            background-color: #718096;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 400px;
+            max-height: 50vh;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        
+        <header class="text-center mb-16">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">❄ FrostyFriday Week 65 – Basic<br>(UDF＆Marketplace) 解説</h1>
+        </header>
+
+        <main>
+            <section id="overview" class="mb-16 bg-white p-8 rounded-xl shadow-lg border border-gray-200">
+                <h2 class="text-3xl font-bold text-gray-800 text-center mb-2">今回のチャレンジ</h2>
+                <p class="text-center text-gray-600 mb-8">Snowflakeマーケットプレイスの「Cyber​​syn US Patent Grants」というアメリカの公開データセットを使い、特定の条件に合う有効な特許情報をUDFを用い抽出します。</p>
+                <div class="grid md:grid-cols-3 gap-8 text-center">
+                    <div class="flex flex-col items-center">
+                        <div class="bg-blue-100 text-blue-600 rounded-full h-16 w-16 flex items-center justify-center mb-4 text-3xl">🗂️</div>
+                        <h3 class="text-xl font-semibold text-gray-700 mb-2">1. データ取得</h3>
+                        <p class="text-gray-500">マーケットプレイスから特許データを取得します。</p>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <div class="bg-green-100 text-green-600 rounded-full h-16 w-16 flex items-center justify-center mb-4 text-3xl">ƒ</div>
+                        <h3 class="text-xl font-semibold text-gray-700 mb-2">2. UDF作成</h3>
+                        <p class="text-gray-500">UDFで対象の特許の有効期間か否かを判定するUDFを作成します。</p>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <div class="bg-purple-100 text-purple-600 rounded-full h-16 w-16 flex items-center justify-center mb-4 text-3xl">🔍</div>
+                        <h3 class="text-xl font-semibold text-gray-700 mb-2">3. UDFを使う(UDFを使ったデータ抽出)</h3>
+                        <p class="text-gray-500">作成したUDFを使用し、NVIDIA社の有効期間の意匠特許を抽出します。</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="workflow" class="mb-16">
+                <h2 class="text-3xl font-bold text-gray-800 text-center mb-8">Snowflake上の操作の流れ</h2>
+                <div class="max-w-4xl mx-auto">
+                    <div class="border-b border-gray-300 mb-6">
+                        <nav class="-mb-px flex space-x-6" aria-label="Tabs">
+                            <button id="tab-1" class="tab-btn tab-active whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">ステップ1: データ取得</button>
+                            <button id="tab-2" class="tab-btn tab-inactive whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">ステップ2: UDF作成</button>
+                            <button id="tab-3" class="tab-btn tab-inactive whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">ステップ3: UDFを使う(UDFを使ったデータ抽出)</button>
+                        </nav>
+                    </div>
+                    
+                    <div id="tab-panel-1" class="tab-panel bg-white p-8 rounded-xl shadow-lg border border-gray-200">
+                        <h3 class="text-2xl font-semibold text-gray-800 mb-4">データセットの取得</h3>
+                        <p class="text-gray-600 mb-6"><br>今回は「Cyberon US Patent Grants」というアメリカの特許データセットを利用します。</p>
+                        <ol class="list-decimal list-inside space-y-3 text-gray-700">
+                            <li>Snowflake UIの左メニューから「Market Place」をクリックします。</li>
+                            <li>検索バーで <code class="bg-gray-200 text-gray-800 px-2 py-1 rounded">Cyberon US Patent Grants</code> を検索します。</li>
+                            <li>「取得」ボタンをクリックし、データベース名を <code class="bg-gray-200 text-gray-800 px-2 py-1 rounded">CYBERSYN_US_PATENT_GRANTS</code> として設定します。</li>
+                        </ol>
+                    </div>
+
+                    <div id="tab-panel-2" class="tab-panel hidden bg-white p-8 rounded-xl shadow-lg border border-gray-200">
+                        <h3 class="text-2xl font-semibold text-gray-800 mb-4">UDF（ユーザー定義関数）の作成</h3>
+                        <p class="text-gray-600 mb-4">複雑なビジネスロジックを再利用可能な関数として定義します。今回は、特許のタイプに応じて有効期間を判定するUDFを作成します。</p>
+                        <div class="bg-yellow-50 border border-yellow-200 p-4 rounded-lg mb-6">
+                            <h4 class="font-semibold text-yellow-900 mb-2">特許データ用語の対訳</h4>
+                            <ul class="list-disc list-inside text-yellow-800">
+                            	<li><strong>contributor:</strong> 貢献者 — 特許に関わった人や組織（発明者・出願人など）</li>
+                            	<li><strong>APPLICATION_DATE:</strong> 出願日 — 特許庁に出願された日</li>
+                            	<li><strong>PUBLICATION_DATE:</strong> 公開日 — 出願から約18か月後に公開される日</li>
+                            </ul>
+                            <br>
+                            <h4 class="font-semibold text-yellow-900 mb-2">期間が有効(TRUE)である条件</h4>
+                            <ul class="list-disc list-inside text-yellow-800">
+                                <li><strong>再発行特許 (Reissue):</strong> 出願日～公開日の間が365日以内</li>
+                                <li><strong>意匠特許 (Design):</strong>  出願日～公開日の間が2年(730日)以内(※1)</li>
+                            </ul>
+                            <br>
+                            <p><red>※1 今回は複雑な条件にならないように、うるう年は考慮せず、1年365日固定の360×2 = 730日換算とする。</red></p>
+                            <p><red>※2 FALSEの定義はFrosty Friday上に明示なかったため、TRUEに該当しない場合、FALSEとする。</red></p>
+
+                        </div>
+                    </div>
+
+                    <div id="tab-panel-3" class="tab-panel hidden bg-white p-8 rounded-xl shadow-lg border border-gray-200">
+                        <h3 class="text-2xl font-semibold text-gray-800 mb-4">NVIDIA社の特許情報を抽出</h3>
+                        <p class="text-gray-600 mb-4">作成したUDFを使って、有効な(TRUEとして判定される)特許のみを抽出する。<br><br>
+                            今回は、<br>　・貢献者名(contributor_name)に「NVIDIA CORPORATION」<br>　・貢献タイプ(contribution_type)が「Assignee - United States Company Or Corporation(※3)」<br>である特許を抽出します。<br><br>
+                            　※3：おそらく、アメリカ国内の企業・団体が特許を取得しているタイプと思われる。（直訳からの推察）
+                        </p>
+
+                        <h4 class="font-semibold text-gray-700 mb-3">実行結果（サンプル）</h4>
+                        <div class="overflow-x-auto rounded-lg border border-gray-200">
+                            <table class="min-w-full divide-y divide-gray-200 text-xs">
+							<thead class="bg-gray-100">
+							    <tr>
+							        <th class="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">特許ID</th>
+							        <th class="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">発明タイトル</th>
+							        <th class="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">特許種別</th>
+							        <th class="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">出願日</th>
+							        <th class="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">公開日</th>
+							        <th class="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">有効期間チェックUDF</th>
+							        <th class="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">日数差分(テスト用)</th>
+							    </tr>
+							    <tr>
+							        <th class="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">PATENT_ID</th>
+							        <th class="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">INVENTION_TITLE</th>
+							        <th class="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">PATENT_TYPE</th>
+							        <th class="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">APPLICATION_DATE</th>
+							        <th class="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">DOCUMENT_PUBLICATION_DATE</th>
+							        <th class="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">VALIDATE_DATE_CHECK</th>
+							        <th class="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">DATEDIFF_FOR_UDF_CHECK</th>
+							    </tr>
+							</thead>
+							<tbody class="divide-y divide-gray-200 bg-white">
+							    <tr>
+							        <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">D902882</td>
+							        <td class="whitespace-nowrap px-4 py-2 text-gray-700">Digital media player</td>
+							        <td class="whitespace-nowrap px-4 py-2 text-gray-700">Design</td>
+							        <td class="whitespace-nowrap px-4 py-2 text-gray-700">2019-05-30</td>
+							        <td class="whitespace-nowrap px-4 py-2 text-gray-700">2020-11-24</td>
+							        <td class="whitespace-nowrap px-4 py-2 text-gray-700">True</td>
+							        <td class="whitespace-nowrap px-4 py-2 text-gray-700">544</td>
+							    </tr>
+							    <tr>
+							        <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">D892084</td>
+							        <td class="whitespace-nowrap px-4 py-2 text-gray-700">Remote control</td>
+							        <td class="whitespace-nowrap px-4 py-2 text-gray-700">Design</td>
+							        <td class="whitespace-nowrap px-4 py-2 text-gray-700">2019-05-30</td>
+							        <td class="whitespace-nowrap px-4 py-2 text-gray-700">2020-08-04</td>
+							        <td class="whitespace-nowrap px-4 py-2 text-gray-700">True</td>
+							        <td class="whitespace-nowrap px-4 py-2 text-gray-700">432</td>
+							    </tr>
+							    <tr>
+							        <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">D713844</td>
+							        <td class="whitespace-nowrap px-4 py-2 text-gray-700">Stylus with chisel-shaped tip</td>
+							        <td class="whitespace-nowrap px-4 py-2 text-gray-700">Design</td>
+							        <td class="whitespace-nowrap px-4 py-2 text-gray-700">2013-12-20</td>
+							        <td class="whitespace-nowrap px-4 py-2 text-gray-700">2014-09-23</td>
+							        <td class="whitespace-nowrap px-4 py-2 text-gray-700">True</td>
+							        <td class="whitespace-nowrap px-4 py-2 text-gray-700">277</td>
+							    </tr>
+							</tbody>
+                        </div>
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="text-center mt-16">
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const tabs = document.querySelectorAll('.tab-btn');
+            const panels = document.querySelectorAll('.tab-panel');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => {
+                        t.classList.remove('tab-active');
+                        t.classList.add('tab-inactive');
+                    });
+                    tab.classList.remove('tab-inactive');
+                    tab.classList.add('tab-active');
+
+                    const targetPanelId = 'tab-panel-' + tab.id.split('-')[1];
+                    panels.forEach(panel => {
+                        if (panel.id === targetPanelId) {
+                            panel.classList.remove('hidden');
+                        } else {
+                            panel.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+
+            const ctx = document.getElementById('patentChart').getContext('2d');
+            const patentChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['再発行特許 (Reissue)', '意匠特許 (Design)', 'その他 (utility, etc.)'],
+                    datasets: [{
+                        label: '有効期間（最大日数）',
+                        data: [365, 730, 365],
+                        backgroundColor: [
+                            'rgba(54, 162, 235, 0.6)',
+                            'rgba(75, 192, 192, 0.6)',
+                            'rgba(255, 206, 86, 0.6)'
+                        ],
+                        borderColor: [
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(255, 206, 86, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: '日数'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': ' + context.parsed.y + ' 日';
+                                }
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: '特許タイプ別 有効期間のルール',
+                            font: {
+                                size: 18
+                            },
+                            padding: {
+                                top: 10,
+                                bottom: 20
+                            }
+                        }
+                    }
+                }
+            });
+        });
+
+        function copyCode(button) {
+            const codeElement = button.nextElementSibling;
+            const textToCopy = codeElement.innerText;
+            
+            const textarea = document.createElement('textarea');
+            textarea.value = textToCopy;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+
+            const originalText = button.innerText;
+            button.innerText = 'コピー完了!';
+            setTimeout(() => {
+                button.innerText = originalText;
+            }, 2000);
+        }
+    </script>
+
+</body>
+</html>
