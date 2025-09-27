@@ -46,7 +46,7 @@ LIST @ff72_challenges;
 --     ref：https://docs.snowflake.com/ja/sql-reference/sql/list
 --　　　　→ オプションのパラメーター／PATTERN = 'regex_pattern'：正規表現を指定しファイルを絞り込むことができる。
 --  　実行してみる
--      →s3://frostyfridaychallenges/challenge_72/insert.sqlというファイル名が表示される。
+--      →s3://frostyfridaychallenges/challenge_72/insert.sqlというファイル名が表示される。
 --   　  →ファイル名がchallenge_72で番号が72で一致なのであっていそう。
 --        ただファイルの中身を見ないと判断できない部分があるので、実際にファイルのクエリを実行する前にファイルの中身を確認してみる。
 LIST @ff72_challenges PATTERN='.*72.*\\.sql';
