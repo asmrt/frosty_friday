@@ -1,3 +1,5 @@
+--!jinja
+
 CREATE OR REPLACE TABLE {{ PROJECT }}.{{ SCHEMA }}.DEMO_SALES AS
   SELECT
     *
