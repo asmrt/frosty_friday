@@ -86,11 +86,12 @@
 
     <!-- Header & Navigation -->
     <header id="header" class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
-        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+        <!-- ナビゲーションの幅を max-w-6xl で維持 -->
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center max-w-6xl">
             <div class="flex items-center">
                 <span class="text-3xl mr-3">❄️</span>
                 <!-- Navigation Title: text-xl -> text-2xl -->
-                <h1 class="text-2xl font-bold text-slate-700 hidden sm:block">Frosty Friday #72 BASIC：EXECUTE IMMEDIATE FROM 解説</h1>
+                <h1 class="text-2xl font-bold text-slate-700 hidden sm:block">Frosty Friday #72 BASIC：<br>EXECUTE IMMEDIATE FROM 解説</h1>
             </div>
             <nav>
                 <!-- Navigation Links: text-base -> text-lg -->
@@ -104,17 +105,18 @@
         </div>
     </header>
 
-    <main class="container mx-auto px-6 py-10 sm:py-16">
+    <!-- メインコンテンツ全体を max-w-6xl で囲み、中央寄せを統一 -->
+    <main class="container mx-auto px-6 py-10 sm:py-16 max-w-6xl">
 
         <!-- Hero Section -->
         <section class="text-center pt-8 pb-16">
-            <!-- Title: text-4xl md:text-6xl -> text-5xl md:text-7xl -->
-            <h1 class="text-5xl md:text-7xl font-extrabold text-slate-800 leading-snug">
-                Frosty Friday #72
+            <!-- Title: max-w-4xl で中央寄せ -->
+            <h1 class="text-3xl md:text-5xl font-extrabold text-slate-800 leading-snug max-w-4xl mx-auto">
+                Frosty Friday #72 BASIC
                 <br> 
                 <span class="snowflake-blue">EXECUTE IMMEDIATE FROM</span><br>解説
             </h1>
-            <!-- Subtitle: text-lg md:text-xl -> text-xl md:text-2xl -->
+            <!-- Subtitle: max-w-4xl で中央寄せ -->
             <p class="mt-4 text-xl md:text-2xl text-slate-500 max-w-4xl mx-auto leading-relaxed">
                 SnowflakeのEXECUTE IMMEDIATE FROMでSQLファイルをそのまま実行！
                 <br>
@@ -125,33 +127,34 @@
         <!-- Current Challenge Section -->
         <section id="challenge" class="py-12 scroll-mt-24">
             <div class="text-center mb-12">
-                <!-- H2: セクションタイトル -->
+                <!-- H2: セクションタイトル (維持) -->
                 <h2 class="text-4xl font-extrabold">今回のチャレンジテーマ</h2>
             </div>
             
-            <div class="flex flex-col space-y-8 max-w-4xl mx-auto">
+            <!-- カード群の幅を max-w-5xl に統一し、中央寄せ -->
+            <div class="flex flex-col space-y-8 max-w-5xl mx-auto">
                 
                 <div class="flex flex-col gap-6"> 
-                    <!--  -->
+                    <!-- チャレンジ内容 -->
                     <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 flex-1">
                         <div class="text-5xl">💡</div>
-                        <!-- H3: カードタイトル -->
+                        <!-- H3: カードタイトル (維持) -->
                         <h3 class="text-2xl font-bold mt-4 mb-2">チャレンジ内容</h3>
-                        <!-- Text: text-base -> text-lg -->
+                        <!-- Text: text-lg (維持) -->
                         <p class="text-lg text-slate-600"><strong class="snowflake-blue font-extrabold">EXECUTE IMMEDIATE FROM</strong> を使ったステージ上のSQLファイルの直接実行</p>
                     </div>
 
                     <!-- ゴール (データ例をここに統合) -->
                     <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 flex-1">
                         <div class="text-5xl">✅</div>
-                        <!-- H3: カードタイトル -->
+                        <!-- H3: カードタイトル (維持) -->
                         <h3 class="text-2xl font-bold mt-4 mb-2">今回のゴール</h3>
-                        <!-- Text: text-base -> text-lg -->
+                        <!-- Text: text-lg (維持) -->
                         <p class="text-lg text-slate-600">ステージ上のファイルのクエリ実行を行い、ターゲットテーブル<code class="bg-slate-100 text-base p-1 rounded">WEEK72_EMPLOYEES</code>に以下データを登録します。</p>
 
                         <!-- 統合されたデータ例 -->
                         <div class="mt-8 border-t pt-6 border-slate-200">
-                            <!-- H4: サブタイトル -->
+                            <!-- H4: サブタイトル (維持) -->
                             <h4 class="text-xl font-bold mb-4 text-slate-700">ターゲットテーブル構造・反映したいデータ (<code class="bg-slate-100 text-base p-1 rounded">WEEK72_EMPLOYEES</code>)</h4>
                             <div class="overflow-x-auto">
                                 <table class="data-table w-full text-base rounded-lg overflow-hidden">
@@ -207,12 +210,12 @@
         <!-- Basic Flow Section -->
         <section id="basic-flow" class="py-12 scroll-mt-24">
             <div class="text-center mb-12">
-                <!-- H2: セクションタイトル -->
+                <!-- H2: セクションタイトル (維持) -->
                 <h2 class="text-4xl font-extrabold">チャレンジの流れ</h2>
-                <!-- Text: text-base -> text-lg -->
+                <!-- Text: text-lg (維持) -->
                 <p class="mt-3 text-lg text-slate-600"><strong>EXECUTE IMMEDIATE FROM</strong> の利用する場合の操作内容の流れ確認しましょう。クリックで詳細が見えます。</p>
             </div>
-            <!-- lg:grid-cols-2 と steps-grid クラスを適用して2列化 -->
+            <!-- 基本フローは max-w-5xl で中央寄せ -->
             <div id="steps-container" class="relative max-w-5xl mx-auto steps-grid"> 
                  <!-- Step Items will be injected here by JavaScript -->
             </div>
@@ -221,25 +224,26 @@
         <!-- Advanced Summary Section -->
         <section id="advanced-summary" class="py-12 scroll-mt-24">
             <div class="text-center mb-8">
-                <!-- H2: セクションタイトル -->
+                <!-- H2: セクションタイトル (維持) -->
                 <h2 class="text-4xl font-extrabold">応用編</h2>
-                <!-- Text: text-base -> text-lg -->
+                <!-- Text: text-lg (維持) -->
                 <p class="mt-3 text-lg text-slate-600">この機能は、開発から運用まで、同じ手順でサクッと回せます。応用例を見てみましょう。</p>
             </div>
-            <div class="grid lg:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            <!-- 応用編サマリーの幅を max-w-5xl に統一し、中央寄せ -->
+            <div class="grid lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
                 <a href="#git-integration" class="block">
-                    <!-- H3: カードタイトル -->
+                    <!-- H3: カードタイトル (維持) -->
                     <div class="bg-white p-8 rounded-xl shadow-md border-t-4 border-snowflake-blue hover:shadow-xl transition-shadow duration-300">
                         <h3 class="text-2xl font-bold flex items-center mb-2"><span class="text-3xl mr-2">🚀</span> Git連携と自動化</h3>
-                        <!-- Text: text-sm -> text-base -->
+                        <!-- Text: text-base (維持) -->
                         <p class="text-base text-slate-600">Git管理下のSQLを直接実行します。また、Git側の変更を取り込み実行することも可能</p>
                     </div>
                 </a>
                 <a href="#jinja-templating" class="block">
-                    <!-- H3: カードタイトル -->
+                    <!-- H3: カードタイトル (維持) -->
                     <div class="bg-white p-8 rounded-xl shadow-md border-t-4 border-snowflake-blue hover:shadow-xl transition-shadow duration-300">
                         <h3 class="text-2xl font-bold flex items-center mb-2"><span class="text-3xl mr-2">🔄</span> Jinja2による環境切替</h3>
-                        <!-- Text: text-sm -> text-base -->
+                        <!-- Text: text-base (維持) -->
                         <p class="text-base text-slate-600">テンプレート化により、単一ソースを複数環境で安全に再利用します。</p>
                     </div>
                 </a>
@@ -248,18 +252,19 @@
         
         <!-- Advanced Details Section -->
         <section id="advanced" class="py-4 scroll-mt-24">
-            <div class="grid lg:grid-cols-2 gap-8 mt-10">
+            <!-- 応用編詳細の幅を max-w-5xl に統一 -->
+            <div class="grid lg:grid-cols-2 gap-8 mt-10 max-w-5xl mx-auto">
                 
                 <!-- Git Integration Card -->
                 <div id="git-integration" class="bg-white p-8 rounded-xl shadow-lg border-2 border-slate-100">
-                    <!-- H3: カードタイトル -->
+                    <!-- H3: カードタイトル (維持) -->
                     <h3 class="text-2xl font-bold flex items-center mb-4 text-snowflake-blue">
                         <span class="text-4xl mr-3">🚀</span>
                         応用①：Git連携で開発を楽に
                     </h3>
-                    <!-- Text: text-base -> text-lg -->
+                    <!-- Text: text-lg (維持) -->
                     <p class="text-lg text-slate-600 mb-4 font-semibold">普段の SQL を Git で管理して、そのまま Snowflake で実行！</p>
-                    <!-- List: text-base -> text-lg -->
+                    <!-- List: text-lg (維持) -->
                     <ul class="space-y-3 text-lg text-slate-700 list-inside list-disc mb-8">
                         <li><strong>バージョン管理に強い</strong>：実行した SQL のバージョンを正確に把握できます。</li>
                         <li><strong>チーム開発にぴったり</strong>：みんなで同じソースコードを使うから安心。</li>
@@ -268,19 +273,19 @@
 
                     <!-- Tabs for Git -->
                     <div class="border-t border-b border-slate-200 flex mb-4">
-                        <!-- ボタンの文字サイズは text-base -> text-lg -->
+                        <!-- ボタンの文字サイズは text-lg (維持) -->
                         <button class="tab-button p-3 flex-1 text-center text-lg rounded-tl-lg transition-colors tab-button-git active" data-tab="content-git-explanation">解説</button>
                         <button class="tab-button p-3 flex-1 text-center text-lg rounded-tr-lg transition-colors tab-button-git" data-tab="content-git-code">デモコード</button>
                     </div>
 
                     <div id="content-git-explanation" class="tab-content tab-content-git active">
-                        <!-- Text: text-sm -> text-base -->
+                        <!-- Text: text-base (維持) -->
                         <p class="text-base text-slate-700">Gitで管理したSQLをそのままSnowflakeで実行できます。レビュー済みコードと実行結果が一致し、環境間でも同じ手順を再現できます。</p>
                     </div>
 
                     <div id="content-git-code" class="tab-content tab-content-git">
                         <div class="bg-slate-800 text-white p-4 rounded-lg font-mono text-sm overflow-x-auto">
-                            <!-- Code Snippet: text-xs -> text-sm -->
+                            <!-- Code Snippet: text-sm (維持) -->
                             <pre>-- 1. Gitリポジトリ（例: GitHub）を外部ステージとして定義
 CREATE OR REPLACE GIT STAGE my_git_stage
     GIT_URL = 'https://github.com/myorg/myrepo.git'
@@ -297,14 +302,14 @@ EXECUTE IMMEDIATE FROM @my_git_stage/path/to/script.sql
 
                 <!-- Jinja Templates Card -->
                 <div id="jinja-templating" class="bg-white p-8 rounded-xl shadow-lg border-2 border-slate-100">
-                     <!-- H3: カードタイトル -->
+                     <!-- H3: カードタイトル (維持) -->
                      <h3 class="text-2xl font-bold flex items-center mb-4 text-snowflake-blue">
                         <span class="text-4xl mr-3">🔄</span>
                         応用②：Jinja2で環境を切り替え
                     </h3>
-                    <!-- Text: text-base -> text-lg -->
+                    <!-- Text: text-lg (維持) -->
                     <p class="text-lg text-slate-600 mb-6 font-semibold">同じ SQL を開発環境・本番環境で手間なく再利用！</p>
-                    <!-- List: text-base -> text-lg -->
+                    <!-- List: text-lg (維持) -->
                     <ul class="space-y-3 text-lg text-slate-700 list-inside list-disc mb-8">
                         <li><strong>環境依存を解消</strong>：変数を変えるだけで DB やスキーマの切替が即座に完了。</li>
                         <li><strong>再現性がアップ</strong>：環境ごとの設定ミスを防ぎ、安定した実行を実現。</li>
@@ -313,19 +318,19 @@ EXECUTE IMMEDIATE FROM @my_git_stage/path/to/script.sql
 
                     <!-- Tabs for Jinja -->
                     <div class="border-t border-b border-slate-200 flex mb-4">
-                        <!-- ボタンの文字サイズは text-base -> text-lg -->
+                        <!-- ボタンの文字サイズは text-lg (維持) -->
                         <button class="tab-button p-3 flex-1 text-center text-lg rounded-tl-lg transition-colors tab-button-jinja active" data-tab="content-jinja-explanation">解説</button>
                         <button class="tab-button p-3 flex-1 text-center text-lg rounded-tr-lg transition-colors tab-button-jinja" data-tab="content-jinja-code">デモコード</button>
                     </div>
 
                     <div id="content-jinja-explanation" class="tab-content tab-content-jinja active">
-                        <!-- Text: text-sm -> text-base -->
+                        <!-- Text: text-base (維持) -->
                         <p class="text-base text-slate-700">Jinja2テンプレートで同じSQLを環境ごとに切り替えて実行できます。変数を渡すだけで開発・本番を共通化し、設定ミスを防げます。</p>
                     </div>
 
                     <div id="content-jinja-code" class="tab-content tab-content-jinja">
                         <div class="bg-slate-800 text-white p-4 rounded-lg font-mono text-sm overflow-x-auto">
-                            <!-- Code Snippet: text-xs -> text-sm -->
+                            <!-- Code Snippet: text-sm (維持) -->
                             <pre>-- Jinja2テンプレートのSQLファイル (例: update_user.sql)
 UPDATE {{ TARGET_DB }}.PUBLIC.USERS 
 SET STATUS = 'ACTIVE' 
@@ -346,18 +351,19 @@ EXECUTE IMMEDIATE FROM @stage/update_user.sql
 
         <!-- Summary Section -->
         <section id="summary" class="py-16 scroll-mt-24">
-            <div class="max-w-3xl mx-auto bg-snowflake-light p-8 md:p-12 rounded-2xl shadow-xl">
-                 <!-- H2: セクションタイトル -->
+            <!-- まとめセクションの幅を max-w-5xl に統一 (他のセクションと揃えるため) -->
+            <div class="max-w-5xl mx-auto bg-snowflake-light p-8 md:p-12 rounded-2xl shadow-xl">
+                 <!-- H2: セクションタイトル (維持) -->
                  <h2 class="text-4xl font-extrabold text-center mb-8">今日のハイライト！</h2>
-                 <!-- List: text-base -> text-lg -->
+                 <!-- List: text-lg (維持) -->
                  <ul class="space-y-4 text-lg text-slate-700">
-                    <li class="flex items-start"><span class="bg-snowflake-blue text-white rounded-full w-8 h-8 flex items-center justify-center font-bold text-base mr-4 mt-1">🥳</span><div><strong>SQLをファイルとして実行できる</strong>：ステージやGitから直接、SQL処理を呼び出せるようになりました。</div></li>
-                    <li class="flex items-start"><span class="bg-snowflake-blue text-white rounded-full w-8 h-8 flex items-center justify-center font-bold text-base mr-4 mt-1">🤝</span><div><strong>Gitとあわせてチーム開発が楽になる</strong>：バージョン管理と自動化がぐっと身近に。</div></li>
+                    <li class="flex items-start"><span class="bg-snowflake-blue text-white rounded-full w-8 h-8 flex items-center justify-center font-bold text-base mr-4 mt-1">🥳</span><div><strong>SQLをファイルとして実行できる</strong>：<br>ステージやGitから直接、SQL処理を呼び出せるように。</div></li>
+                    <li class="flex items-start"><span class="bg-snowflake-blue text-white rounded-full w-8 h-8 flex items-center justify-center font-bold text-base mr-4 mt-1">🤝</span><div><strong>Gitとあわせてチーム開発が楽になる</strong>：<br>バージョン管理と自動化がぐっと身近に。</div></li>
                     <li class="flex items-start"><span class="bg-snowflake-blue text-white rounded-full w-8 h-8 flex items-center justify-center font-bold text-base mr-4 mt-1">🔄</span><div><strong>テンプレで環境をまたいで再利用できる</strong>：Jinja2で環境切替も簡単。</div></li>
                  </ul>
                  <div class="border-t border-slate-300 my-8"></div>
                  <blockquote class="text-center">
-                     <!-- キーメッセージを強調 -->
+                     <!-- キーメッセージ: text-4xl md:text-5xl (維持) -->
                      <p class="text-4xl md:text-5xl font-extrabold text-slate-800 leading-tight">
                          👉 SQLをコードとして、<br>もっと<span class="snowflake-blue">自由に！</span><span class="text-5xl ml-2">🎉</span>
                      </p>
@@ -394,7 +400,7 @@ EXECUTE IMMEDIATE FROM @stage/update_user.sql
                 { icon: '☁️', title: '3. 外部ステージの定義', description: 'SQLファイルが配置されている外部クラウドストレージ（S3など）へのアクセスパスを設定します。' },
                 { icon: '🔍', title: '4. ステージファイルパスの確認', description: '実行対象のSQLファイルのステージ上のパスとファイル名を正確に確認します。' },
                 { icon: '⚡', title: '5. DRY_RUNによる実行計画の検証', description: '本番実行の前に、`DRY_RUN`オプションを使用して処理の実行計画と安全性を検証します。' },
-                { icon: '▶️', title: '6. 本番実行の実施', description: 'EXECUTE IMMEDIATE FROMコマンドを使用して、ステージ上のSQLを実行します。' },
+                { icon: '▶️', tattoo: '6. 本番実行の実施', description: 'EXECUTE IMMEDIATE FROMコマンドを使用して、ステージ上のSQLを実行します。' },
                 { icon: '📊', title: '7. 最終的なデータ検証', description: 'ターゲットテーブルのデータ件数や内容を確認し、実行結果が期待通りであることを検証します。' }
             ];
             
@@ -411,13 +417,13 @@ EXECUTE IMMEDIATE FROM @stage/update_user.sql
                 const content = `
                     <div class="flex items-start w-full">
                         <div class="flex-shrink-0 relative mr-3 sm:mr-4">
-                            <!-- アイコンサイズを w-14/h-14 sm:w-16/h-16 -> w-16/h-16 sm:w-20/h-20 に拡大 -->
+                            <!-- アイコンサイズを w-16/h-16 sm:w-20/h-20 に拡大 -->
                             <div class="step-circle bg-white w-16 h-16 sm:w-20 sm:h-20 rounded-full flex items-center justify-center text-3xl sm:text-4xl border-4 border-slate-200 shadow-sm">${step.icon}</div>
                         </div>
                         <div class="step-content bg-white p-3 sm:p-4 rounded-xl border-2 border-transparent w-full shadow-md hover:border-snowflake-blue transition-all duration-300">
-                            <!-- H4: ステップタイトル text-base sm:text-lg -> text-lg sm:text-xl -->
+                            <!-- H4: ステップタイトル text-lg sm:text-xl (維持) -->
                             <h4 class="font-bold text-lg sm:text-xl">${step.title}</h4>
-                            <!-- 説明文： text-xs sm:text-sm -> text-sm sm:text-base -->
+                            <!-- 説明文： text-sm sm:text-base (維持) -->
                             <p class="text-slate-600 mt-1 text-sm sm:text-base">${step.description}</p>
                         </div>
                     </div>
