@@ -266,9 +266,9 @@
                     <p class="text-lg text-slate-600 mb-4 font-semibold">普段の SQL を Git で管理して、そのまま Snowflake で実行！</p>
                     <!-- List: text-lg (維持) -->
                     <ul class="space-y-3 text-lg text-slate-700 list-inside list-disc mb-8">
-                        <li><strong>バージョン管理に強い</strong><br>実行した SQL のバージョンを正確に把握できます。</li>
-                        <li><strong>チーム開発にぴったり</strong><br>みんなで同じソースコードを使うから安心。</li>
-                        <li><strong>自動化</strong><br>Git と連携してクエリ実行を半自動化しちゃいます。</li>
+                        <li><strong>バージョン管理に強い</strong><br>実行した SQL のバージョンを正確に把握可能</li>
+                        <li><strong>チーム開発にぴったり</strong><br>みんなで同じソースコードを使うから安心</li>
+                        <li><strong>自動化</strong><br>Git と連携してクエリ実行を半自動化可能</li>
                     </ul>
 
                     <!-- Tabs for Git -->
@@ -311,9 +311,9 @@ EXECUTE IMMEDIATE FROM @my_git_stage/path/to/script.sql
                     <p class="text-lg text-slate-600 mb-6 font-semibold">同じ SQL を開発環境・本番環境で手間なく再利用！</p>
                     <!-- List: text-lg (維持) -->
                     <ul class="space-y-3 text-lg text-slate-700 list-inside list-disc mb-8">
-                        <li><strong>環境依存を解消</strong><br>変数を変えるだけで DB やスキーマの切替が即座に完了。</li>
-                        <li><strong>再現性がアップ</strong><br>環境ごとの設定ミスを防ぎ、安定した実行を実現。</li>
-                        <li><strong>テンプレートの威力</strong><br>一つのソースを様々なシナリオで活用可能に。</li>
+                        <li><strong>環境依存を解消</strong><br>変数を変えるだけで DB やスキーマの切替が即座に完了</li>
+                        <li><strong>再現性がアップ</strong><br>環境ごとの設定ミスを防ぎ、安定した実行を実現</li>
+                        <li><strong>テンプレートの威力</strong><br>一つのソースを様々なシナリオで活用可能</li>
                     </ul>
 
                     <!-- Tabs for Jinja -->
@@ -357,9 +357,9 @@ EXECUTE IMMEDIATE FROM @stage/update_user.sql
                  <h2 class="text-4xl font-extrabold text-center mb-8">まとめ</h2>
                  <!-- List: text-lg (維持) -->
                  <ul class="space-y-4 text-lg text-slate-700">
-                    <li class="flex items-start"><span class="bg-snowflake-blue text-white rounded-full w-8 h-8 flex items-center justify-center font-bold text-base mr-4 mt-1">🥳</span><div><strong>SQLをファイルとして実行できる</strong><br>ステージやGitから直接、SQL処理を呼び出せるように。</div></li>
-                    <li class="flex items-start"><span class="bg-snowflake-blue text-white rounded-full w-8 h-8 flex items-center justify-center font-bold text-base mr-4 mt-1">🤝</span><div><strong>Gitとあわせてチーム開発が楽になる</strong><br>バージョン管理と自動化がぐっと身近に。</div></li>
-                    <li class="flex items-start"><span class="bg-snowflake-blue text-white rounded-full w-8 h-8 flex items-center justify-center font-bold text-base mr-4 mt-1">🔄</span><div><strong>テンプレで環境をまたいで再利用できる</strong><br>Jinja2で環境切替も簡単。</div></li>
+                    <li class="flex items-start"><span class="bg-snowflake-blue text-white rounded-full w-8 h-8 flex items-center justify-center font-bold text-base mr-4 mt-1">🥳</span><div><strong>SQLをファイルとして実行できる</strong><br>ステージやGitから直接、SQL処理を呼び出せるように</div></li>
+                    <li class="flex items-start"><span class="bg-snowflake-blue text-white rounded-full w-8 h-8 flex items-center justify-center font-bold text-base mr-4 mt-1">🤝</span><div><strong>Gitとあわせてチーム開発が楽になる</strong><br>バージョン管理と自動化がぐっと身近に</div></li>
+                    <li class="flex items-start"><span class="bg-snowflake-blue text-white rounded-full w-8 h-8 flex items-center justify-center font-bold text-base mr-4 mt-1">🔄</span><div><strong>テンプレで環境をまたいで再利用できる</strong><br>Jinja2で環境切替も簡単</div></li>
                  </ul>
                  <div class="border-t border-slate-300 my-8"></div>
                  <blockquote class="text-center">
@@ -399,7 +399,7 @@ EXECUTE IMMEDIATE FROM @stage/update_user.sql
                 { icon: '📄', title: '2. ターゲットテーブルの作成', description: 'SQLファイルによってデータが投入される受け皿となるテーブルを準備します。' },
                 { icon: '☁️', title: '3. 外部ステージの定義', description: 'SQLファイルが配置されている外部クラウドストレージ（S3など）へのアクセスパスを設定します。' },
                 { icon: '🔍', title: '4. ステージファイルパスの確認', description: '実行対象のSQLファイルのステージ上のパスとファイル名を正確に確認します。' },
-                { icon: '⚡', title: '5. DRY_RUNによる実行計画の検証', description: '本番実行の前に、`DRY_RUN`オプションを使用して処理の実行計画と安全性を検証します。' },
+                { icon: '⚡', title: '5. DRY_RUNによる実行計画の検証', description: '本番実行の前に、DRY_RUNオプションを使用して処理の実行計画と安全性を検証します。' },
                 { icon: '▶️', title: '6. 本番実行の実施', description: 'EXECUTE IMMEDIATE FROMコマンドを使用して、ステージ上のSQLを実行します。' },
                 { icon: '📊', title: '7. 最終的なデータ検証', description: 'ターゲットテーブルのデータ件数や内容を確認し、実行結果が期待通りであることを検証します。' }
             ];
