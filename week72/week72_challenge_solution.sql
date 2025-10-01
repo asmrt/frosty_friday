@@ -17,10 +17,10 @@
 -- 0. 事前準備
 --    Frosty Friday 72用のDATABASE、SCHEMAの作成
 CREATE OR REPLACE DATABASE FF72_DB;
-CREATE OR REPLACE SCHEMA FF72_DB.PUBLIC;
-
 USE DATABASE FF72_DB;
-USE SCHEMA PUBLIC;
+
+CREATE OR REPLACE SCHEMA solutions;
+USE SCHEMA solutions;
 
 -- Week 72 Challenge
 -- 1. テーブル作成
@@ -74,4 +74,8 @@ EXECUTE IMMEDIATE FROM '@ff72_challenges/challenge_72/insert.sql';
 --    今回のチャレンジで期待しているレコード（チャレンジページの下部の表）の通りにレコードが反映されているか確認する。
 --      →確認した結果問題なさそう。
 SELECT * FROM week72_employees ORDER BY employeeid;
+
+-- 4.チャレンジ後、お片付け（任意）
+-- 　後続のGitリポジトリを参照しての実行に利用するためコメントアウト。
+--DROP SCHEMA solutions; 
 -- EOF
