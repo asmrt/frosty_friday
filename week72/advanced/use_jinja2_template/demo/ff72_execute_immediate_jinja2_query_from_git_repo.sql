@@ -20,6 +20,32 @@ EXECUTE IMMEDIATE FROM '@frosty_friday_git_stage/branches/main/week72/advanced/u
 USING (database_name=>'frosty_friday', schema=>'basic_72')
 ;
 
--- リポジトリステージを更新する
+-- (3)内で実行したINSERTの結果が、反映先のデータベース、スキーマ以外一致することを確認する。
+WITH note_use_template_exe AS (
+    -- テンプレート利用なし
+    SELECT
+        'なし' AS use_template_category ,
+        *
+    FROM
+        ff72_db.solutions.week72_employees
+)
+,use_template_exe AS (
+    -- テンプレート利用有
+    SELECT
+        'あり' AS use_template_category ,
+        *
+    FROM
+        frosty_friday.basic_72.week72_employees
+)
+SELECT
+    *
+FROM
+    note_use_template_exe nut
+LEFT JOIN
+    use_template_exe ut
+ON nut.employeeid = ut.employeeid
+;
+
+-- リポジトリステージを更新する(参考)
 -- リモートリポジトリに変更があり、その内容をリポジトリステージに反映するにはALTER GIT REPOSITORY コマンドを使用します。これにより Git リポジトリのコンテンツをリポジトリステージにフェッチできます。
 ALTER GIT REPOSITORY frosty_friday_git_stage FETCH;
